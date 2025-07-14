@@ -6,7 +6,19 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
-import { Music, Calendar, MapPin, Mail, Phone, Instagram, Facebook, Youtube, Play, User, MessageSquare, CheckCircle } from "lucide-react"
+import {
+  Calendar,
+  MapPin,
+  Mail,
+  Phone,
+  Instagram,
+  Facebook,
+  Youtube,
+  Play,
+  User,
+  MessageSquare,
+  CheckCircle,
+} from "lucide-react"
 import LoadingScreen from "@/components/LoadingScreen"
 import VideoSlider from "@/components/VideoSlider"
 
@@ -273,14 +285,14 @@ export default function MusicaholicBandWebsite() {
 
                 {/* Mobile Menu Panel */}
                 <motion.div
-                  className="fixed top-16 left-4 right-4 bg-black/95 backdrop-blur-xl rounded-2xl border border-amber-500/20 shadow-2xl shadow-amber-500/10 overflow-hidden"
+                  className="fixed top-20 left-2 right-2 bg-black/95 backdrop-blur-xl rounded-2xl border border-amber-500/20 shadow-2xl shadow-amber-500/10 overflow-hidden z-50"
                   initial={{ opacity: 0, y: -20, scale: 0.95 }}
                   animate={{ opacity: 1, y: 0, scale: 1 }}
                   exit={{ opacity: 0, y: -20, scale: 0.95 }}
                   transition={{ type: "spring", stiffness: 300, damping: 30 }}
                 >
-                  <div className="p-6">
-                    <div className="space-y-2">
+                  <div className="p-4">
+                    <div className="space-y-1">
                       {["hero", "about", "members", "gallery", "shows", "music", "contact"].map((section, index) => (
                         <motion.button
                           key={section}
@@ -305,21 +317,25 @@ export default function MusicaholicBandWebsite() {
                                 currentSection === section ? "bg-black" : "bg-amber-400/50"
                               }`}
                             />
-                            <span className="capitalize text-base">{section === "hero" ? "Home" : section}</span>
+                            <span className="capitalize text-sm font-medium">
+                              {section === "hero" ? "Home" : section}
+                            </span>
                           </div>
                         </motion.button>
                       ))}
                     </div>
 
                     {/* Mobile Menu Footer */}
-                    <div className="mt-6 pt-6 border-t border-amber-500/20">
-                      <div className="flex justify-center space-x-4 mb-4">
+                    <div className="mt-4 pt-4 border-t border-amber-500/20">
+                      <div className="flex justify-center space-x-3 mb-4">
                         <motion.button
                           className="p-2 rounded-full bg-amber-500/10 text-amber-400 hover:bg-amber-500/20 transition-colors"
                           whileHover={{ scale: 1.1 }}
                           whileTap={{ scale: 0.9 }}
                           aria-label="Instagram"
-                          onClick={() => window.open("https://www.instagram.com/musicaholictheband?igsh=N3NsZzFxd3ZueW8x", "_blank")}
+                          onClick={() =>
+                            window.open("https://www.instagram.com/musicaholictheband?igsh=N3NsZzFxd3ZueW8x", "_blank")
+                          }
                         >
                           <Instagram className="w-4 h-4" />
                         </motion.button>
@@ -336,6 +352,12 @@ export default function MusicaholicBandWebsite() {
                           whileHover={{ scale: 1.1 }}
                           whileTap={{ scale: 0.9 }}
                           aria-label="Facebook"
+                          onClick={() =>
+                            window.open(
+                              "https://www.facebook.com/ankit.pathak.754918?mibextid=wwXIfr&rdid=C7aRgWLHFe0YlxEJ&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F19hBTSUCUw%2F%3Fmibextid%3DwwXIfr",
+                              "_blank",
+                            )
+                          }
                         >
                           <Facebook className="w-4 h-4" />
                         </motion.button>
@@ -360,22 +382,28 @@ export default function MusicaholicBandWebsite() {
 
       {/* Hero Section */}
       <section id="hero" className="relative h-screen flex items-center justify-center overflow-hidden pt-20 md:pt-24">
-        {/* Animated Background */}
-        <motion.div
-          className="absolute inset-0 w-full h-full overflow-hidden"
-          style={{ y: backgroundY }}
-        >
+        {/* Enhanced Video Background */}
+        <motion.div className="absolute inset-0 w-full h-full overflow-hidden" style={{ y: backgroundY }}>
           <video
             autoPlay
             loop
             muted
             playsInline
-            className="w-full h-full object-cover object-center absolute inset-0 z-0 opacity-40"
-            style={{ minHeight: '100%', minWidth: '100%' }}
+            preload="metadata"
+            className="w-full h-full object-cover absolute inset-0 z-0"
+            style={{
+              minHeight: "100vh",
+              minWidth: "100vw",
+              objectPosition: "center center",
+            }}
+            poster="/images/hero-poster.jpg"
           >
             <source src="/video/herobanner.mp4" type="video/mp4" />
+            <source src="/video/herobanner.webm" type="video/webm" />
+            Your browser does not support the video tag.
           </video>
-          <div className="absolute inset-0 bg-gradient-to-br from-red-900/20 via-black to-amber-900/20 z-10" />
+          <div className="absolute inset-0 bg-gradient-to-br from-red-900/30 via-black/60 to-amber-900/30 z-10" />
+          <div className="absolute inset-0 bg-black/20 z-20" />
         </motion.div>
 
         {/* Floating Musical Notes */}
@@ -406,11 +434,11 @@ export default function MusicaholicBandWebsite() {
         </div>
 
         <motion.div
-          className="text-center z-10 w-full max-w-[95vw] sm:max-w-2xl md:max-w-4xl mx-auto px-2 sm:px-6"
+          className="text-center z-30 w-full max-w-[95vw] sm:max-w-2xl md:max-w-4xl mx-auto px-4 sm:px-6 relative"
           style={{ y: textY }}
         >
           <motion.h1
-            className="text-4xl xs:text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-extrabold mb-4 sm:mb-6 bg-gradient-to-r from-amber-400 via-red-500 to-amber-400 bg-clip-text text-transparent tracking-tight drop-shadow-[0_4px_24px_rgba(255,102,0,0.25)] font-[cursive,sans-serif] uppercase leading-tight"
+            className="text-3xl xs:text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-extrabold mb-4 sm:mb-6 bg-gradient-to-r from-amber-400 via-red-500 to-amber-400 bg-clip-text text-transparent tracking-tight drop-shadow-[0_4px_24px_rgba(255,102,0,0.25)] font-[cursive,sans-serif] uppercase leading-[0.9] sm:leading-tight"
             initial={{ scale: 0.5, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ duration: 1, delay: 0.5 }}
@@ -419,7 +447,7 @@ export default function MusicaholicBandWebsite() {
           </motion.h1>
 
           <motion.p
-            className="text-base xs:text-lg sm:text-xl mb-6 sm:mb-8 text-white/80 max-w-xl sm:max-w-2xl mx-auto leading-relaxed"
+            className="text-sm xs:text-base sm:text-lg md:text-xl mb-6 sm:mb-8 text-white/90 max-w-sm sm:max-w-xl md:max-w-2xl mx-auto leading-relaxed px-2"
             initial={{ y: 50, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 1, delay: 1.1 }}
@@ -428,14 +456,14 @@ export default function MusicaholicBandWebsite() {
           </motion.p>
 
           <motion.div
-            className="flex flex-col gap-3 sm:flex-row sm:gap-4 justify-center items-center w-full"
+            className="flex flex-col gap-3 sm:flex-row sm:gap-4 justify-center items-center w-full px-4"
             initial={{ y: 50, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 1, delay: 1.4 }}
           >
             <Button
               size="lg"
-              className="w-full sm:w-auto bg-gradient-to-r from-red-600 to-amber-600 hover:from-red-700 hover:to-amber-700 text-white px-5 py-2 text-base rounded-full font-semibold md:px-8 md:py-3 md:text-lg"
+              className="w-full sm:w-auto bg-gradient-to-r from-red-600 to-amber-600 hover:from-red-700 hover:to-amber-700 text-white px-6 py-3 text-sm sm:text-base rounded-full font-semibold md:px-8 md:py-3 md:text-lg transition-all duration-300 shadow-lg hover:shadow-xl"
               onClick={() => scrollToSection("contact")}
             >
               Book Now
@@ -443,7 +471,7 @@ export default function MusicaholicBandWebsite() {
             <Button
               variant="outline"
               size="lg"
-              className="w-full sm:w-auto border-amber-400 text-amber-400 hover:bg-amber-400 hover:text-black px-5 py-2 text-base rounded-full font-semibold bg-transparent md:px-8 md:py-3 md:text-lg"
+              className="w-full sm:w-auto border-2 border-amber-400 text-amber-400 hover:bg-amber-400 hover:text-black px-6 py-3 text-sm sm:text-base rounded-full font-semibold bg-black/30 backdrop-blur-sm md:px-8 md:py-3 md:text-lg transition-all duration-300"
               onClick={() => scrollToSection("music")}
             >
               <Play className="mr-2 h-4 w-4" />
@@ -589,7 +617,6 @@ export default function MusicaholicBandWebsite() {
           </motion.div>
 
           {/* Band Member Integration */}
-          
 
           {/* Call to Action */}
           <motion.div
@@ -719,35 +746,35 @@ export default function MusicaholicBandWebsite() {
                 viewport={{ once: true }}
                 className="relative group overflow-hidden rounded-lg flex items-center justify-center cursor-pointer"
                 onClick={() => {
-                  const modal = document.createElement('div');
-                  modal.style.position = 'fixed';
-                  modal.style.top = '0';
-                  modal.style.left = '0';
-                  modal.style.width = '100vw';
-                  modal.style.height = '100vh';
-                  modal.style.background = 'rgba(0,0,0,0.95)';
-                  modal.style.display = 'flex';
-                  modal.style.alignItems = 'center';
-                  modal.style.justifyContent = 'center';
-                  modal.style.zIndex = '9999';
-                  modal.onclick = () => document.body.removeChild(modal);
-                  const img = document.createElement('img');
-                  img.src = image;
-                  img.alt = `Performance ${index + 1}`;
-                  img.style.maxWidth = '90vw';
-                  img.style.maxHeight = '90vh';
-                  img.style.borderRadius = '1rem';
-                  img.style.boxShadow = '0 0 40px 8px rgba(0,0,0,0.7)';
-                  img.onclick = e => e.stopPropagation();
-                  modal.appendChild(img);
-                  document.body.appendChild(modal);
+                  const modal = document.createElement("div")
+                  modal.style.position = "fixed"
+                  modal.style.top = "0"
+                  modal.style.left = "0"
+                  modal.style.width = "100vw"
+                  modal.style.height = "100vh"
+                  modal.style.background = "rgba(0,0,0,0.95)"
+                  modal.style.display = "flex"
+                  modal.style.alignItems = "center"
+                  modal.style.justifyContent = "center"
+                  modal.style.zIndex = "9999"
+                  modal.onclick = () => document.body.removeChild(modal)
+                  const img = document.createElement("img")
+                  img.src = image
+                  img.alt = `Performance ${index + 1}`
+                  img.style.maxWidth = "90vw"
+                  img.style.maxHeight = "90vh"
+                  img.style.borderRadius = "1rem"
+                  img.style.boxShadow = "0 0 40px 8px rgba(0,0,0,0.7)"
+                  img.onclick = (e) => e.stopPropagation()
+                  modal.appendChild(img)
+                  document.body.appendChild(modal)
                 }}
               >
                 <img
                   src={image || "/placeholder.svg"}
                   alt={`Performance ${index + 1}`}
                   className="w-full h-64 object-cover object-center group-hover:scale-105 transition-transform duration-500"
-                  style={{ aspectRatio: '4/3', display: 'block' }}
+                  style={{ aspectRatio: "4/3", display: "block" }}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
               </motion.div>
@@ -765,9 +792,12 @@ export default function MusicaholicBandWebsite() {
             loop
             muted
             playsInline
+            preload="metadata"
             className="w-full h-full object-cover opacity-20"
+            style={{ objectPosition: "center center" }}
           >
             <source src="/video/banner.mp4" type="video/mp4" />
+            <source src="/video/banner.webm" type="video/webm" />
             Your browser does not support the video tag.
           </video>
         </div>
@@ -849,10 +879,12 @@ export default function MusicaholicBandWebsite() {
             loop
             muted
             playsInline
+            preload="metadata"
             className="w-full h-full object-cover object-center opacity-30"
-            style={{ aspectRatio: '9/16' }}
+            style={{ objectPosition: "center center" }}
           >
             <source src="/video/guitar.mp4" type="video/mp4" />
+            <source src="/video/guitar.webm" type="video/webm" />
             Your browser does not support the video tag.
           </video>
         </div>
@@ -922,8 +954,8 @@ export default function MusicaholicBandWebsite() {
               <div className="bg-gradient-to-br from-black/50 to-amber-900/30 p-6 rounded-2xl border border-amber-500/30 shadow-xl">
                 <h4 className="text-xl font-bold text-amber-400 mb-4">Our Musical Journey</h4>
                 <p className="text-white/80 mb-4">
-                  From soulful Sufi nights to electrifying rock performances, our music transcends genres and touches hearts.
-                  Each note carries the essence of India's rich musical heritage, reimagined for the modern era.
+                  From soulful Sufi nights to electrifying rock performances, our music transcends genres and touches
+                  hearts. Each note carries the essence of India's rich musical heritage, reimagined for the modern era.
                 </p>
                 <ul className="list-disc list-inside text-white/80 space-y-2">
                   <li>Fusion of traditional and contemporary sounds</li>
@@ -942,12 +974,16 @@ export default function MusicaholicBandWebsite() {
             viewport={{ once: true }}
             className="text-center mt-12"
           >
-            <p className="text-white/80 mb-4">Stay updated with our latest performances and behind-the-scenes content</p>
+            <p className="text-white/80 mb-4">
+              Stay updated with our latest performances and behind-the-scenes content
+            </p>
             <div className="flex justify-center space-x-4">
               <Button
                 size="sm"
                 className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white px-4 py-2 rounded-full font-semibold"
-                onClick={() => window.open("https://www.instagram.com/musicaholictheband?igsh=N3NsZzFxd3ZueW8x", "_blank")}
+                onClick={() =>
+                  window.open("https://www.instagram.com/musicaholictheband?igsh=N3NsZzFxd3ZueW8x", "_blank")
+                }
               >
                 <Instagram className="mr-1.5 h-4 w-4" />
                 Follow on Instagram
@@ -955,7 +991,12 @@ export default function MusicaholicBandWebsite() {
               <Button
                 size="sm"
                 className="bg-gradient-to-r from-blue-600 to-cyan-600 hover:from-blue-700 hover:to-cyan-700 text-white px-4 py-2 rounded-full font-semibold"
-                onClick={() => window.open("https://www.facebook.com/ankit.pathak.754918?mibextid=wwXIfr&rdid=C7aRgWLHFe0YlxEJ&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F19hBTSUCUw%2F%3Fmibextid%3DwwXIfr", "_blank")}
+                onClick={() =>
+                  window.open(
+                    "https://www.facebook.com/ankit.pathak.754918?mibextid=wwXIfr&rdid=C7aRgWLHFe0YlxEJ&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F19hBTSUCUw%2F%3Fmibextid%3DwwXIfr",
+                    "_blank",
+                  )
+                }
               >
                 <Facebook className="mr-1.5 h-4 w-4" />
                 Like on Facebook
@@ -998,33 +1039,51 @@ export default function MusicaholicBandWebsite() {
                   }}
                   transition={{
                     duration: 5,
-                    repeat: Infinity,
+                    repeat: Number.POSITIVE_INFINITY,
                     repeatType: "reverse",
                   }}
                 />
-                <h3 className="text-3xl md:text-4xl font-extrabold bg-gradient-to-r from-amber-400 to-red-500 bg-clip-text text-transparent mb-6 tracking-tight text-left drop-shadow-lg">Book Us for Your Event</h3>
+                <h3 className="text-3xl md:text-4xl font-extrabold bg-gradient-to-r from-amber-400 to-red-500 bg-clip-text text-transparent mb-6 tracking-tight text-left drop-shadow-lg">
+                  Book Us for Your Event
+                </h3>
                 {formSubmitted ? (
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5 }}
-                    className="text-center py-8"
+                    className="text-center py-12"
                   >
-                    <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
-                    <h4 className="text-xl font-bold text-amber-400 mb-2">Thank You!</h4>
-                    <p className="text-white/80">We've received your booking inquiry and will get back to you soon.</p>
+                    <motion.div
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
+                    >
+                      <CheckCircle className="w-20 h-20 text-green-500 mx-auto mb-6" />
+                    </motion.div>
+                    <h4 className="text-2xl font-bold text-amber-400 mb-4">Thank You!</h4>
+                    <p className="text-white/80 text-lg">
+                      We've received your booking inquiry and will get back to you soon.
+                    </p>
+                    <Button
+                      onClick={() => setFormSubmitted(false)}
+                      className="mt-6 bg-gradient-to-r from-amber-600 to-red-600 hover:from-amber-700 hover:to-red-700"
+                    >
+                      Send Another Inquiry
+                    </Button>
                   </motion.div>
                 ) : (
                   <form
-                    className="space-y-5"
-                    onSubmit={e => {
-                      e.preventDefault();
-                      const form = e.target;
-                      const name = form.name.value;
-                      const phone = form.phone.value;
-                      const email = form.email.value;
-                      const event = form.event.value;
-                      const details = form.details.value;
+                    className="space-y-6"
+                    onSubmit={(e) => {
+                      e.preventDefault()
+                      const form = e.target as HTMLFormElement
+                      const formData = new FormData(form)
+                      const name = formData.get("name") as string
+                      const phone = formData.get("phone") as string
+                      const email = formData.get("email") as string
+                      const event = formData.get("event") as string
+                      const details = formData.get("details") as string
+
                       const msg =
                         `🎶 *New Booking Inquiry* 🎶%0A` +
                         `----------------------------------%0A` +
@@ -1034,78 +1093,96 @@ export default function MusicaholicBandWebsite() {
                         `📅 *Event Date & Venue:* ${event}%0A` +
                         `📝 *Details:* ${details}%0A` +
                         `----------------------------------%0A` +
-                        `Sent from MUSICAHOLIC द Band Website`;
-                      window.open(`https://wa.me/918303860422?text=${encodeURIComponent(msg)}`);
-                      setFormSubmitted(true);
+                        `Sent from MUSICAHOLIC द Band Website`
+
+                      window.open(`https://wa.me/918303860422?text=${msg}`, "_blank")
+                      setFormSubmitted(true)
                     }}
                   >
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <div className="relative">
+                      <motion.div
+                        className="relative group"
+                        whileHover={{ scale: 1.02 }}
+                        transition={{ duration: 0.2 }}
+                      >
                         <Input
                           name="name"
                           placeholder="Your Name"
-                          className="bg-black/70 border border-amber-400/40 focus:border-amber-400/80 text-amber-100 placeholder:text-amber-300 rounded-xl py-3 pl-10 pr-4 shadow-inner focus:ring-2 focus:ring-amber-400 transition-all duration-200"
-                          minLength={3}
-                          maxLength={40}
+                          className="bg-black/80 border-2 border-amber-400/40 focus:border-amber-400 text-amber-100 placeholder:text-amber-300/70 rounded-xl py-4 pl-12 pr-4 shadow-inner focus:ring-2 focus:ring-amber-400/50 transition-all duration-300 group-hover:border-amber-400/60"
+                          minLength={2}
+                          maxLength={50}
                           autoComplete="name"
                           required
                         />
-                        <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-amber-400/60 h-5 w-5" />
-                      </div>
-                      <div className="relative">
+                        <User className="absolute left-4 top-1/2 transform -translate-y-1/2 text-amber-400/70 h-5 w-5 transition-colors group-hover:text-amber-400" />
+                      </motion.div>
+
+                      <motion.div
+                        className="relative group"
+                        whileHover={{ scale: 1.02 }}
+                        transition={{ duration: 0.2 }}
+                      >
                         <Input
                           name="phone"
                           placeholder="Phone Number"
-                          className="bg-black/70 border border-amber-400/40 focus:border-amber-400/80 text-amber-100 placeholder:text-amber-300 rounded-xl py-3 pl-10 pr-4 shadow-inner focus:ring-2 focus:ring-amber-400 transition-all duration-200"
+                          className="bg-black/80 border-2 border-amber-400/40 focus:border-amber-400 text-amber-100 placeholder:text-amber-300/70 rounded-xl py-4 pl-12 pr-4 shadow-inner focus:ring-2 focus:ring-amber-400/50 transition-all duration-300 group-hover:border-amber-400/60"
                           pattern="[0-9]{10,15}"
                           minLength={10}
                           maxLength={15}
                           autoComplete="tel"
                           required
                         />
-                        <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 text-amber-400/60 h-5 w-5" />
-                      </div>
+                        <Phone className="absolute left-4 top-1/2 transform -translate-y-1/2 text-amber-400/70 h-5 w-5 transition-colors group-hover:text-amber-400" />
+                      </motion.div>
                     </div>
-                    <div className="relative">
+
+                    <motion.div className="relative group" whileHover={{ scale: 1.02 }} transition={{ duration: 0.2 }}>
                       <Input
                         name="email"
                         placeholder="Email Address"
-                        className="bg-black/70 border border-amber-400/40 focus:border-amber-400/80 text-amber-100 placeholder:text-amber-300 rounded-xl py-3 pl-10 pr-4 shadow-inner focus:ring-2 focus:ring-amber-400 transition-all duration-200"
+                        className="bg-black/80 border-2 border-amber-400/40 focus:border-amber-400 text-amber-100 placeholder:text-amber-300/70 rounded-xl py-4 pl-12 pr-4 shadow-inner focus:ring-2 focus:ring-amber-400/50 transition-all duration-300 group-hover:border-amber-400/60"
                         required
                         type="email"
                         autoComplete="email"
-                        maxLength={60}
+                        maxLength={80}
                       />
-                      <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-amber-400/60 h-5 w-5" />
-                    </div>
-                    <div className="relative">
+                      <Mail className="absolute left-4 top-1/2 transform -translate-y-1/2 text-amber-400/70 h-5 w-5 transition-colors group-hover:text-amber-400" />
+                    </motion.div>
+
+                    <motion.div className="relative group" whileHover={{ scale: 1.02 }} transition={{ duration: 0.2 }}>
                       <Input
                         name="event"
                         placeholder="Event Date & Venue"
-                        className="bg-black/70 border border-amber-400/40 focus:border-amber-400/80 text-amber-100 placeholder:text-amber-300 rounded-xl py-3 pl-10 pr-4 shadow-inner focus:ring-2 focus:ring-amber-400 transition-all duration-200"
+                        className="bg-black/80 border-2 border-amber-400/40 focus:border-amber-400 text-amber-100 placeholder:text-amber-300/70 rounded-xl py-4 pl-12 pr-4 shadow-inner focus:ring-2 focus:ring-amber-400/50 transition-all duration-300 group-hover:border-amber-400/60"
                         required
-                        maxLength={80}
+                        maxLength={100}
                       />
-                      <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 text-amber-400/60 h-5 w-5" />
-                    </div>
-                    <div className="relative">
+                      <Calendar className="absolute left-4 top-1/2 transform -translate-y-1/2 text-amber-400/70 h-5 w-5 transition-colors group-hover:text-amber-400" />
+                    </motion.div>
+
+                    <motion.div className="relative group" whileHover={{ scale: 1.02 }} transition={{ duration: 0.2 }}>
                       <Textarea
                         name="details"
-                        placeholder="Tell us about your event..."
-                        className="bg-black/70 border border-amber-400/40 focus:border-amber-400/80 text-amber-100 placeholder:text-amber-300 min-h-[120px] rounded-xl py-3 pl-10 pr-4 shadow-inner focus:ring-2 focus:ring-amber-400 transition-all duration-200"
+                        placeholder="Tell us about your event, budget, and special requirements..."
+                        className="bg-black/80 border-2 border-amber-400/40 focus:border-amber-400 text-amber-100 placeholder:text-amber-300/70 min-h-[140px] rounded-xl py-4 pl-12 pr-4 shadow-inner focus:ring-2 focus:ring-amber-400/50 transition-all duration-300 group-hover:border-amber-400/60 resize-none"
                         required
                         minLength={10}
                         maxLength={500}
                       />
-                      <MessageSquare className="absolute left-3 top-4 text-amber-400/60 h-5 w-5" />
-                    </div>
+                      <MessageSquare className="absolute left-4 top-5 text-amber-400/70 h-5 w-5 transition-colors group-hover:text-amber-400" />
+                    </motion.div>
+
                     <motion.button
-                      whileHover={{ scale: 1.03 }}
-                      whileTap={{ scale: 0.97 }}
-                      className="w-full bg-gradient-to-r from-red-600 via-amber-500 to-amber-400 hover:from-red-700 hover:to-amber-500 text-black font-bold text-lg py-3 rounded-xl shadow-lg transition-all duration-300 border-2 border-amber-400/60 tracking-wide uppercase"
+                      whileHover={{ scale: 1.05, boxShadow: "0 10px 30px rgba(251, 191, 36, 0.3)" }}
+                      whileTap={{ scale: 0.98 }}
+                      className="w-full bg-gradient-to-r from-red-600 via-amber-500 to-amber-400 hover:from-red-700 hover:to-amber-500 text-black font-bold text-lg py-4 rounded-xl shadow-lg transition-all duration-300 border-2 border-amber-400/60 tracking-wide uppercase relative overflow-hidden group"
                       type="submit"
                     >
-                      Send Booking Inquiry via WhatsApp
+                      <span className="relative z-10">Send Booking Inquiry via WhatsApp</span>
+                      <motion.div
+                        className="absolute inset-0 bg-gradient-to-r from-amber-400 to-red-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                        initial={false}
+                      />
                     </motion.button>
                   </form>
                 )}
@@ -1144,7 +1221,9 @@ export default function MusicaholicBandWebsite() {
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     className="flex items-center space-x-2 px-4 py-2 rounded-full border border-red-500 text-red-400 hover:bg-red-500 hover:text-white transition-all duration-300"
-                    onClick={() => window.open("https://www.instagram.com/musicaholictheband?igsh=N3NsZzFxd3ZueW8x", "_blank")}
+                    onClick={() =>
+                      window.open("https://www.instagram.com/musicaholictheband?igsh=N3NsZzFxd3ZueW8x", "_blank")
+                    }
                   >
                     <Instagram className="h-4 w-4" />
                     <span>Instagram</span>
@@ -1161,7 +1240,12 @@ export default function MusicaholicBandWebsite() {
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                     className="flex items-center space-x-2 px-4 py-2 rounded-full border border-red-500 text-red-400 hover:bg-red-500 hover:text-white transition-all duration-300"
-                    onClick={() => window.open("https://www.facebook.com/ankit.pathak.754918?mibextid=wwXIfr&rdid=C7aRgWLHFe0YlxEJ&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F19hBTSUCUw%2F%3Fmibextid%3DwwXIfr", "_blank")}
+                    onClick={() =>
+                      window.open(
+                        "https://www.facebook.com/ankit.pathak.754918?mibextid=wwXIfr&rdid=C7aRgWLHFe0YlxEJ&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F19hBTSUCUw%2F%3Fmibextid%3DwwXIfr",
+                        "_blank",
+                      )
+                    }
                   >
                     <Facebook className="h-4 w-4" />
                     <span>Facebook</span>
@@ -1192,4 +1276,3 @@ export default function MusicaholicBandWebsite() {
     </div>
   )
 }
-
