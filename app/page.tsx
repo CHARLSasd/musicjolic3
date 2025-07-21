@@ -4,23 +4,10 @@ import { useState, useEffect } from "react"
 import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
-import {
-  Calendar,
-  MapPin,
-  Mail,
-  Phone,
-  Instagram,
-  Facebook,
-  Youtube,
-  Play,
-  User,
-  MessageSquare,
-  CheckCircle,
-} from "lucide-react"
+import { Instagram, Facebook, Youtube, Play, Calendar, Mail, MapPin, Phone } from "lucide-react"
 import LoadingScreen from "@/components/LoadingScreen"
 import VideoSlider from "@/components/VideoSlider"
+import BookingForm from "@/components/BookingForm"
 
 export default function MusicaholicBandWebsite() {
   const [isLoading, setIsLoading] = useState(true)
@@ -37,7 +24,10 @@ export default function MusicaholicBandWebsite() {
   const [currentSection, setCurrentSection] = useState("hero")
   const { scrollY } = useScroll()
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-  const [formSubmitted, setFormSubmitted] = useState(false)
+  
+  // Track scroll progress
+  const { scrollYProgress } = useScroll()
+
 
   const backgroundY = useTransform(scrollY, [0, 500], [0, 150])
   const textY = useTransform(scrollY, [0, 500], [0, 100])
@@ -380,31 +370,118 @@ export default function MusicaholicBandWebsite() {
         </div>
       </motion.nav>
 
-      {/* Hero Section */}
-      <section id="hero" className="relative h-screen flex items-center justify-center overflow-hidden pt-20 md:pt-24">
-        {/* Enhanced Video Background */}
-        <motion.div className="absolute inset-0 w-full h-full overflow-hidden" style={{ y: backgroundY }}>
+      {/* Enhanced Progress Bar - Mobile Only */}
+      <div className="fixed top-0 left-0 right-0 h-1.5 z-50 sm:hidden bg-black/20">
+        <motion.div 
+          className="h-full bg-gradient-to-r from-amber-400 via-red-500 to-amber-500"
+          style={{
+            width: `${scrollYProgress.get() * 100}%`,
+            boxShadow: '0 0 10px rgba(251, 191, 36, 0.7)'
+          }}
+          initial={false}
+          animate={{
+            background: [
+              'linear-gradient(90deg, #f59e0b, #ef4444, #f59e0b)',
+              'linear-gradient(90deg, #ef4444, #f59e0b, #ef4444)'
+            ]
+          }}
+          transition={{
+            duration: 2,
+            repeat: Infinity,
+            repeatType: 'reverse',
+            ease: 'easeInOut'
+          }}
+        >
+          <div className="absolute right-0 top-0 bottom-0 w-2 bg-white opacity-80 rounded-full transform translate-x-1/2" />
+        </motion.div>
+      </div>
+
+      {/* Hero Section - Mobile Optimized */}
+      <section id="hero" className="relative h-screen flex items-center justify-center overflow-hidden pt-16 md:pt-20">
+        {/* Background Container */}
+        <div className="absolute inset-0 w-full h-full">
+          {/* Video for all devices with mobile optimization */}
           <video
             autoPlay
             loop
             muted
             playsInline
-            preload="metadata"
-            className="w-full h-full object-cover absolute inset-0 z-0"
+            disablePictureInPicture
+            className="w-full h-full object-cover"
             style={{
               minHeight: "100vh",
               minWidth: "100vw",
               objectPosition: "center center",
+              backgroundColor: "#000"
             }}
-            poster="/images/hero-poster.jpg"
+            onLoadedData={(e) => {
+              // Force play on mobile
+              const video = e.target as HTMLVideoElement;
+              const playPromise = video.play();
+              
+              if (playPromise !== undefined) {
+                playPromise.catch(error => {
+                  // If autoplay fails, mute and try again (required for some mobile browsers)
+                  video.muted = true;
+                  video.play().catch(e => console.log('Video play failed:', e));
+                });
+              }
+            }}
           >
             <source src="/video/herobanner.mp4" type="video/mp4" />
             <source src="/video/herobanner.webm" type="video/webm" />
-            Your browser does not support the video tag.
+            {/* Fallback image if video fails to load */}
+            <img 
+              src="/images/ankit-stage.jpg" 
+              alt="Musicaholic Band Performance"
+              className="w-full h-full object-cover"
+            />
           </video>
-          <div className="absolute inset-0 bg-gradient-to-br from-red-900/30 via-black/60 to-amber-900/30 z-10" />
-          <div className="absolute inset-0 bg-black/20 z-20" />
-        </motion.div>
+          
+          {/* Enhanced Theme-Matching Overlay */}
+          <motion.div 
+            className="absolute inset-0 z-10"
+            style={{
+              background: `linear-gradient(
+                135deg, 
+                rgba(22, 22, 22, 0.8) 0%, 
+                rgba(120, 53, 15, 0.6) 30%, 
+                rgba(120, 53, 15, 0.4) 50%, 
+                rgba(22, 22, 22, 0.8) 70%
+              )`,
+              mixBlendMode: 'multiply'
+            }}
+            initial={{ opacity: 0.9 }}
+            animate={{
+              background: [
+                `linear-gradient(135deg, rgba(22, 22, 22, 0.8) 0%, rgba(120, 53, 15, 0.6) 30%, rgba(120, 53, 15, 0.4) 50%, rgba(22, 22, 22, 0.8) 70%)`,
+                `linear-gradient(135deg, rgba(22, 22, 22, 0.8) 0%, rgba(185, 28, 28, 0.6) 30%, rgba(22, 22, 22, 0.8) 50%, rgba(120, 53, 15, 0.6) 70%)`,
+                `linear-gradient(135deg, rgba(22, 22, 22, 0.8) 0%, rgba(120, 53, 15, 0.6) 30%, rgba(22, 22, 22, 0.8) 50%, rgba(185, 28, 28, 0.6) 70%)`
+              ]
+            }}
+            transition={{
+              duration: 15,
+              repeat: Infinity,
+              repeatType: 'reverse',
+              ease: 'easeInOut'
+            }}
+          >
+            {/* Subtle noise texture */}
+            <div className="absolute inset-0 opacity-5" style={{
+              backgroundImage: "url(" + 'data:image/svg+xml;base64,' + btoa(
+                '<svg width="100" height="100" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">' +
+                '<rect width="100" height="100" fill="#000"/>' +
+                '<g fill-opacity="0.2">' +
+                '<rect x="20" y="10" width="4" height="4" fill="#fff"/>' +
+                '<rect x="50" y="10" width="3" height="3" fill="#fff"/>' +
+                '<rect x="80" y="10" width="2" height="2" fill="#fff"/>' +
+                '</g>' +
+                '</svg>'
+              ) + ")",
+              backgroundSize: '100px 100px'
+            }} />
+          </motion.div>
+        </div>
 
         {/* Floating Musical Notes */}
         <div className="absolute inset-0 pointer-events-none">
@@ -438,19 +515,25 @@ export default function MusicaholicBandWebsite() {
           style={{ y: textY }}
         >
           <motion.h1
-            className="text-3xl xs:text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-extrabold mb-4 sm:mb-6 bg-gradient-to-r from-amber-400 via-red-500 to-amber-400 bg-clip-text text-transparent tracking-tight drop-shadow-[0_4px_24px_rgba(255,102,0,0.25)] font-[cursive,sans-serif] uppercase leading-[0.9] sm:leading-tight"
+            className="text-4xl xs:text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-bold mb-4 sm:mb-6 text-white uppercase leading-tight px-2"
             initial={{ scale: 0.5, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ duration: 1, delay: 0.5 }}
+            style={{
+              textShadow: '3px 3px 6px rgba(0,0,0,0.8), 0 0 30px rgba(255,165,0,0.3)'
+            }}
           >
-            MUSICAHOLIC द Band
+            MUSICAHOLIC <span className="text-amber-400">द</span> BAND
           </motion.h1>
 
           <motion.p
-            className="text-sm xs:text-base sm:text-lg md:text-xl mb-6 sm:mb-8 text-white/90 max-w-sm sm:max-w-xl md:max-w-2xl mx-auto leading-relaxed px-2"
+            className="text-lg xs:text-xl sm:text-2xl md:text-3xl mb-6 sm:mb-8 text-white/90 max-w-sm sm:max-w-xl md:max-w-2xl mx-auto leading-relaxed px-4 font-medium"
             initial={{ y: 50, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 1, delay: 1.1 }}
+            style={{
+              textShadow: '2px 2px 4px rgba(0,0,0,0.8)'
+            }}
           >
             Reimagining India's Musical Heritage for the Modern Era
           </motion.p>
@@ -1043,149 +1126,7 @@ export default function MusicaholicBandWebsite() {
                     repeatType: "reverse",
                   }}
                 />
-                <h3 className="text-3xl md:text-4xl font-extrabold bg-gradient-to-r from-amber-400 to-red-500 bg-clip-text text-transparent mb-6 tracking-tight text-left drop-shadow-lg">
-                  Book Us for Your Event
-                </h3>
-                {formSubmitted ? (
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5 }}
-                    className="text-center py-12"
-                  >
-                    <motion.div
-                      initial={{ scale: 0 }}
-                      animate={{ scale: 1 }}
-                      transition={{ delay: 0.2, type: "spring", stiffness: 200 }}
-                    >
-                      <CheckCircle className="w-20 h-20 text-green-500 mx-auto mb-6" />
-                    </motion.div>
-                    <h4 className="text-2xl font-bold text-amber-400 mb-4">Thank You!</h4>
-                    <p className="text-white/80 text-lg">
-                      We've received your booking inquiry and will get back to you soon.
-                    </p>
-                    <Button
-                      onClick={() => setFormSubmitted(false)}
-                      className="mt-6 bg-gradient-to-r from-amber-600 to-red-600 hover:from-amber-700 hover:to-red-700"
-                    >
-                      Send Another Inquiry
-                    </Button>
-                  </motion.div>
-                ) : (
-                  <form
-                    className="space-y-6"
-                    onSubmit={(e) => {
-                      e.preventDefault()
-                      const form = e.target as HTMLFormElement
-                      const formData = new FormData(form)
-                      const name = formData.get("name") as string
-                      const phone = formData.get("phone") as string
-                      const email = formData.get("email") as string
-                      const event = formData.get("event") as string
-                      const details = formData.get("details") as string
-
-                      const msg =
-                        `🎶 *New Booking Inquiry* 🎶%0A` +
-                        `----------------------------------%0A` +
-                        `👤 *Name:* ${name}%0A` +
-                        `📞 *Phone:* ${phone}%0A` +
-                        `✉️ *Email:* ${email}%0A` +
-                        `📅 *Event Date & Venue:* ${event}%0A` +
-                        `📝 *Details:* ${details}%0A` +
-                        `----------------------------------%0A` +
-                        `Sent from MUSICAHOLIC द Band Website`
-
-                      window.open(`https://wa.me/918303860422?text=${msg}`, "_blank")
-                      setFormSubmitted(true)
-                    }}
-                  >
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      <motion.div
-                        className="relative group"
-                        whileHover={{ scale: 1.02 }}
-                        transition={{ duration: 0.2 }}
-                      >
-                        <Input
-                          name="name"
-                          placeholder="Your Name"
-                          className="bg-black/80 border-2 border-amber-400/40 focus:border-amber-400 text-amber-100 placeholder:text-amber-300/70 rounded-xl py-4 pl-12 pr-4 shadow-inner focus:ring-2 focus:ring-amber-400/50 transition-all duration-300 group-hover:border-amber-400/60"
-                          minLength={2}
-                          maxLength={50}
-                          autoComplete="name"
-                          required
-                        />
-                        <User className="absolute left-4 top-1/2 transform -translate-y-1/2 text-amber-400/70 h-5 w-5 transition-colors group-hover:text-amber-400" />
-                      </motion.div>
-
-                      <motion.div
-                        className="relative group"
-                        whileHover={{ scale: 1.02 }}
-                        transition={{ duration: 0.2 }}
-                      >
-                        <Input
-                          name="phone"
-                          placeholder="Phone Number"
-                          className="bg-black/80 border-2 border-amber-400/40 focus:border-amber-400 text-amber-100 placeholder:text-amber-300/70 rounded-xl py-4 pl-12 pr-4 shadow-inner focus:ring-2 focus:ring-amber-400/50 transition-all duration-300 group-hover:border-amber-400/60"
-                          pattern="[0-9]{10,15}"
-                          minLength={10}
-                          maxLength={15}
-                          autoComplete="tel"
-                          required
-                        />
-                        <Phone className="absolute left-4 top-1/2 transform -translate-y-1/2 text-amber-400/70 h-5 w-5 transition-colors group-hover:text-amber-400" />
-                      </motion.div>
-                    </div>
-
-                    <motion.div className="relative group" whileHover={{ scale: 1.02 }} transition={{ duration: 0.2 }}>
-                      <Input
-                        name="email"
-                        placeholder="Email Address"
-                        className="bg-black/80 border-2 border-amber-400/40 focus:border-amber-400 text-amber-100 placeholder:text-amber-300/70 rounded-xl py-4 pl-12 pr-4 shadow-inner focus:ring-2 focus:ring-amber-400/50 transition-all duration-300 group-hover:border-amber-400/60"
-                        required
-                        type="email"
-                        autoComplete="email"
-                        maxLength={80}
-                      />
-                      <Mail className="absolute left-4 top-1/2 transform -translate-y-1/2 text-amber-400/70 h-5 w-5 transition-colors group-hover:text-amber-400" />
-                    </motion.div>
-
-                    <motion.div className="relative group" whileHover={{ scale: 1.02 }} transition={{ duration: 0.2 }}>
-                      <Input
-                        name="event"
-                        placeholder="Event Date & Venue"
-                        className="bg-black/80 border-2 border-amber-400/40 focus:border-amber-400 text-amber-100 placeholder:text-amber-300/70 rounded-xl py-4 pl-12 pr-4 shadow-inner focus:ring-2 focus:ring-amber-400/50 transition-all duration-300 group-hover:border-amber-400/60"
-                        required
-                        maxLength={100}
-                      />
-                      <Calendar className="absolute left-4 top-1/2 transform -translate-y-1/2 text-amber-400/70 h-5 w-5 transition-colors group-hover:text-amber-400" />
-                    </motion.div>
-
-                    <motion.div className="relative group" whileHover={{ scale: 1.02 }} transition={{ duration: 0.2 }}>
-                      <Textarea
-                        name="details"
-                        placeholder="Tell us about your event, budget, and special requirements..."
-                        className="bg-black/80 border-2 border-amber-400/40 focus:border-amber-400 text-amber-100 placeholder:text-amber-300/70 min-h-[140px] rounded-xl py-4 pl-12 pr-4 shadow-inner focus:ring-2 focus:ring-amber-400/50 transition-all duration-300 group-hover:border-amber-400/60 resize-none"
-                        required
-                        minLength={10}
-                        maxLength={500}
-                      />
-                      <MessageSquare className="absolute left-4 top-5 text-amber-400/70 h-5 w-5 transition-colors group-hover:text-amber-400" />
-                    </motion.div>
-
-                    <motion.button
-                      whileHover={{ scale: 1.05, boxShadow: "0 10px 30px rgba(251, 191, 36, 0.3)" }}
-                      whileTap={{ scale: 0.98 }}
-                      className="w-full bg-gradient-to-r from-red-600 via-amber-500 to-amber-400 hover:from-red-700 hover:to-amber-500 text-black font-bold text-lg py-4 rounded-xl shadow-lg transition-all duration-300 border-2 border-amber-400/60 tracking-wide uppercase relative overflow-hidden group"
-                      type="submit"
-                    >
-                      <span className="relative z-10">Send Booking Inquiry via WhatsApp</span>
-                      <motion.div
-                        className="absolute inset-0 bg-gradient-to-r from-amber-400 to-red-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                        initial={false}
-                      />
-                    </motion.button>
-                  </form>
-                )}
+                <BookingForm />
               </Card>
             </motion.div>
 
